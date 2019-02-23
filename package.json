@@ -1,0 +1,24 @@
+{
+  "name": "easy-fetch",
+  "version": "1.0.0",
+  "description": "Original Fetch API with some helpful feature",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MinimalistYing/easy-fetch.git"
+  },
+  "keywords": [
+    "fetch",
+    "http",
+    "ajax"
+  ],
+  "author": "MinimalistYing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MinimalistYing/easy-fetch/issues"
+  },
+  "homepage": "https://github.com/MinimalistYing/easy-fetch#readme"
+}
