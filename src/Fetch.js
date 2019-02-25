@@ -1,21 +1,21 @@
 import defaults from './defaults'
 import combineURL from './combineURL'
 
-function Fetch(initConfg) {
+function Fetch (initConfg) {
   this.config = initConfg
 }
 
-Fetch.prototype.request = (url, init = {}) => {
-  url = combineURL(url)
-  whidow.fetch(url, {
+Fetch.prototype.request = function (url, init = {}) {
+  url = combineURL(this.config.base, url)
+  return window.fetch(url, {
     ...defaults,
     ...init
   })
 }
 
 ;['get', 'delete', 'head', 'options'].map(method => {
-  Fetch.prototype[method] = (url, init = {}) => {
-    return this.request(url , {
+  Fetch.prototype[method] = function (url, init = {}) {
+    return this.request(url, {
       ...init,
       method: method.toUpperCase()
     })
@@ -23,11 +23,14 @@ Fetch.prototype.request = (url, init = {}) => {
 })
 
 ;['post', 'put', 'patch'].map(method => {
-  Fetch.prototype[method] = (url, body = {}, init = {}) => {
+  Fetch.prototype[method] = function (url, body = {}, init = {}) {
     if (typeof body === 'object') {
       body = JSON.stringify(body)
+      if (!init.headers || !init.headers['Content-Type']) {
+        init.headers['Content-Type'] = 'application/json'
+      }
     }
-    return this.request(url , {
+    return this.request(url, {
       ...init,
       method: method.toUpperCase(),
       body

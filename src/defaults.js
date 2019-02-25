@@ -1,8 +1,7 @@
 export default {
   method: 'GET',
   headers: {
-    'Accept': 'application/json, text/plain, */*',
-    'Content-Type': 'application/json'
+    'Accept': 'application/json, text/plain, */*'
   },
   mode: 'same-origin'
 }

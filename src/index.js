@@ -1,5 +1,5 @@
 import Fetch from './Fetch'
-import conifg from './config'
+import config from './config'
 
 const fetch = new Fetch(config)
 
