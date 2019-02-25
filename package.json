@@ -1,5 +1,5 @@
 {
-  "name": "easy-fetch",
+  "name": "the-fetch",
   "version": "1.0.0",
   "description": "Original Fetch API with some helpful feature",
   "main": "index.js",
@@ -15,7 +15,7 @@
     "http",
     "ajax"
   ],
-  "author": "MinimalistYing",
+  "author": "minimalistying",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/MinimalistYing/easy-fetch/issues"
