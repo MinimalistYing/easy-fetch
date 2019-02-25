@@ -10,6 +10,14 @@ Fetch.prototype.request = function (url, init = {}) {
   return window.fetch(url, {
     ...defaults,
     ...init
+  }).then(res => {
+    if (res.ok) {
+      return res.json()
+    } else {
+      res.json().then(err => {
+        typeof this.config.onError === 'function' && this.config.onError(err)
+      })
+    }
   })
 }
 
