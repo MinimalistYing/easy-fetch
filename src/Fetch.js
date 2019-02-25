@@ -24,6 +24,9 @@ Fetch.prototype.request = (url, init = {}) => {
 
 ;['post', 'put', 'patch'].map(method => {
   Fetch.prototype[method] = (url, body = {}, init = {}) => {
+    if (typeof body === 'object') {
+      body = JSON.stringify(body)
+    }
     return this.request(url , {
       ...init,
       method: method.toUpperCase(),
