@@ -9,7 +9,7 @@
     headers: {
       'Accept': 'application/json, text/plain, */*'
     },
-    mode: 'same-origin',
+    mode: 'cors',
 
     resolver: 'json'
   };

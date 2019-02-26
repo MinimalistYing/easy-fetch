@@ -6,7 +6,7 @@ Original Fetch API with some helpful feature
 npm i the-fetch --save
 ```
 
-# QuickStart
+# Quick Start
 
 ```js
 import fetch from 'the-fetch'
