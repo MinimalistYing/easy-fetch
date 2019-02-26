@@ -3,5 +3,7 @@ export default {
   headers: {
     'Accept': 'application/json, text/plain, */*'
   },
-  mode: 'same-origin'
+  mode: 'same-origin',
+
+  resolver: 'json'
 }
