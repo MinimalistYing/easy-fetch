@@ -3,7 +3,7 @@ export default {
   headers: {
     'Accept': 'application/json, text/plain, */*'
   },
-  mode: 'cors',
+  mode: 'cors', // allow cors
 
-  resolver: 'json'
+  resolver: 'json' // reslove response to json 
 }
