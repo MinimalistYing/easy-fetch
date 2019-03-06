@@ -9,11 +9,12 @@
     headers: {
       'Accept': 'application/json, text/plain, */*'
     },
-    mode: 'cors',
+    mode: 'cors', // allow cors
 
-    resolver: 'json'
+    resolver: 'json' // reslove response to json 
   };
 
+  // if the url is not absolute combine the base URL with the request URL into a absolute URL
   function combineURL (base, relative) {
     if (!base || !relative || isAbsoluteURL(relative)) return relative
     return base.replace(/\/+$/, '') + '/' + relative.replace(/^\/+/, '')
@@ -35,9 +36,10 @@
       ...init
     }).then(res => {
       if (!res.ok && typeof this.config.onError === 'function') {
-        res[resolver]().then(err => {
+        return res[resolver]().then(err => {
           this.config.onError(err);
-        });
+          return Promise.reject(err)
+        })
       } else {
         return res[resolver]()
       }
@@ -88,13 +90,13 @@
 
   const fetch = new Fetch(config);
 
-  // Now we can use like both `fetch(url, init)` or `fetch.get(url, init)`
   function bind (fn, thisArg) {
     return function (...args) {
       return fn.apply(thisArg, args)
     }
   }
 
+  // Now we can use like both `fetch(url, init)` or `fetch.get(url, init)`
   const instance = bind(Fetch.prototype.request, fetch);
   Object.setPrototypeOf(instance, fetch);
   Object.assign(instance, fetch);
