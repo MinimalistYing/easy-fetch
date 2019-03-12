@@ -14,8 +14,8 @@ Fetch.prototype.request = function (url, init = {}) {
   }).then(res => {
     if (!res.ok && typeof this.config.onError === 'function') {
       return res[resolver]().then(err => {
-        this.config.onError(err)
-        return Promise.reject(err)
+        this.config.onError(err, res)
+        return Promise.reject(err, res)
       })
     } else {
       return res[resolver]()
