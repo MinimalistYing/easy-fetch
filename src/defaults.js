@@ -5,5 +5,7 @@ export default {
   },
   mode: 'cors', // allow cors
 
-  resolver: 'json' // reslove response to json 
+  resolver: 'json', // reslove response to json
+  base: '',
+  onError: () => {}
 }

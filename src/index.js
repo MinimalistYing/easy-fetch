@@ -1,7 +1,7 @@
 import Fetch from './Fetch'
-import config from './config'
+import defaults from './defaults'
 
-const fetch = new Fetch(config)
+const fetch = new Fetch(defaults)
 
 function bind (fn, thisArg) {
   return function (...args) {

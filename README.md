@@ -18,8 +18,8 @@ npm i the-fetch --save
 ```js
 import fetch from 'the-fetch'
 
-fetch.config.base = 'https://www.xxx.com/' // set base URL
-fetch.config.onError = err => console.log(err) // set error callback
+fetch.defaults.base = 'https://www.xxx.com/' // set base URL
+fetch.defaults.onError = err => console.log(err) // set error callback
 
 /**
  * If not set the response will resolve to json like

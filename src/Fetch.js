@@ -1,20 +1,19 @@
-import defaults from './defaults'
 import combineURL from './combineURL'
 
-function Fetch (initConfg) {
-  this.config = initConfg
+function Fetch (defaults) {
+  this.defaults = defaults
 }
 
 Fetch.prototype.request = function (url, init = {}) {
-  url = combineURL(this.config.base, url)
-  const resolver = init.resolver || defaults.resolver
+  url = combineURL(this.defaults.base, url)
+  const resolver = init.resolver || this.defaults.resolver
   return window.fetch(url, {
-    ...defaults,
+    ...this.defaults,
     ...init
   }).then(res => {
-    if (!res.ok && typeof this.config.onError === 'function') {
+    if (!res.ok && typeof this.defaults.onError === 'function') {
       return res[resolver]().then(err => {
-        this.config.onError(err, res)
+        this.defaults.onError(err, res)
         return Promise.reject(err, res)
       })
     } else {

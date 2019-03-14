@@ -4,16 +4,6 @@
   (global = global || self, global.theFetch = factory());
 }(this, function () { 'use strict';
 
-  var defaults = {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json, text/plain, */*'
-    },
-    mode: 'cors', // allow cors
-
-    resolver: 'json' // reslove response to json 
-  };
-
   // if the url is not absolute combine the base URL with the request URL into a absolute URL
   function combineURL (base, relative) {
     if (!base || !relative || isAbsoluteURL(relative)) return relative
@@ -24,20 +14,20 @@
     return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
   }
 
-  function Fetch (initConfg) {
-    this.config = initConfg;
+  function Fetch (defaults) {
+    this.defaults = defaults;
   }
 
   Fetch.prototype.request = function (url, init = {}) {
-    url = combineURL(this.config.base, url);
-    const resolver = init.resolver || defaults.resolver;
+    url = combineURL(this.defaults.base, url);
+    const resolver = init.resolver || this.defaults.resolver;
     return window.fetch(url, {
-      ...defaults,
+      ...this.defaults,
       ...init
     }).then(res => {
-      if (!res.ok && typeof this.config.onError === 'function') {
+      if (!res.ok && typeof this.defaults.onError === 'function') {
         return res[resolver]().then(err => {
-          this.config.onError(err, res);
+          this.defaults.onError(err, res);
           return Promise.reject(err, res)
         })
       } else {
@@ -83,12 +73,19 @@
     };
   });
 
-  var config = {
+  var defaults = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json, text/plain, */*'
+    },
+    mode: 'cors', // allow cors
+
+    resolver: 'json', // reslove response to json
     base: '',
     onError: () => {}
   };
 
-  const fetch = new Fetch(config);
+  const fetch = new Fetch(defaults);
 
   function bind (fn, thisArg) {
     return function (...args) {
