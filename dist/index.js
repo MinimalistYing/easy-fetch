@@ -58,7 +58,7 @@
 
   ;['post', 'put', 'patch'].map(method => {
     Fetch.prototype[method] = function (url, body = {}, init = {}) {
-      if (typeof body === 'object') {
+      if (typeof body === 'object' && !(body instanceof FormData)) {
         body = JSON.stringify(body);
         if (!init.headers || !init.headers['Content-Type']) {
           if (!init.headers) init.headers = {};
