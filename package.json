@@ -1,6 +1,6 @@
 {
   "name": "the-fetch",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Original Fetch API with some helpful feature",
   "main": "dist/index.js",
   "scripts": {

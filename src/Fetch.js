@@ -31,7 +31,15 @@ Fetch.prototype.request = function (url, init = {}) {
 
     const search = new URLSearchParams()
     Object.entries(params).forEach(kv => {
-      typeof kv[1] !== 'undefined' && search.append(kv[0], kv[1])
+      if (typeof kv[1] !== 'undefined') {
+        if (Array.isArray(kv[1])) {
+          for (let item of kv[1]) {
+            search.append(kv[0], item)
+          }
+        } else {
+          search.append(kv[0], kv[1])
+        }
+      }
     })
     url = search.toString() ? `${url}?${search.toString()}` : url
 
