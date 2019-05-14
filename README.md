@@ -6,7 +6,7 @@ Original Fetch API with some additional helpful feature
 * Global base URL
 
 # Browser Support
-Sorry ~ Only support the mordern browser
+Sorry ~ Only support the modern browsers
 
 # Installation
 ```
