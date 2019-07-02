@@ -14,26 +14,92 @@
     return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
   }
 
+  function InterceptorManager () {
+    this.handlers = [];
+  }
+
+  InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+    this.handlers.push({
+      fulfilled,
+      rejected
+    });
+    return this.handlers.length - 1
+  };
+
+  InterceptorManager.prototype.eject = function eject(id) {
+    if (this.handlers[id]) {
+      this.handlers[id] = null;
+    }
+  };
+
   function Fetch (defaults) {
     this.defaults = defaults;
+
+    this.interceptors = {
+      request: new InterceptorManager(),
+      response: new InterceptorManager()
+    };
+  }
+
+  function dispatchRequest (config) {
+    const resolver = config.resolver;
+    const url = config.url;
+    delete config.url;
+    return window.fetch(url, config).then(res => {
+      // if (!res.ok && typeof config.onError === 'function') {
+      //   return res[resolver]().then(err => {
+      //     config.onError(err, res)
+      //     return Promise.reject(err, res)
+      //   })
+      // } else {
+      //   return res[resolver]()
+      // }
+      return res[resolver]()
+    })
   }
 
   Fetch.prototype.request = function (url, init = {}) {
-    url = combineURL(this.defaults.base, url);
-    const resolver = init.resolver || this.defaults.resolver;
-    return window.fetch(url, {
+    const config = {
       ...this.defaults,
       ...init
-    }).then(res => {
-      if (!res.ok && typeof this.defaults.onError === 'function') {
-        return res[resolver]().then(err => {
-          this.defaults.onError(err, res);
-          return Promise.reject(err, res)
-        })
-      } else {
-        return res[resolver]()
+    };
+    config.url = combineURL(config.base, url);
+    const chain = [dispatchRequest, undefined];
+    
+    let promise = Promise.resolve(config);
+
+    for (let handler of this.interceptors.request.handlers) {
+      if (handler) {
+        chain.unshift(handler.fulfilled, handler.rejected);
       }
-    })
+    }
+
+    for (let handler of this.interceptors.response.handlers) {
+      if (handler) {
+        chain.push(handler.fulfilled, handler.rejected);
+      }
+    }
+
+    while (chain.length) {
+      promise = promise.then(chain.shift(), chain.shift());
+    }
+
+    return promise
+    // url = combineURL(this.defaults.base, url)
+    // const resolver = init.resolver || this.defaults.resolver
+    // return window.fetch(url, {
+    //   ...this.defaults,
+    //   ...init
+    // }).then(res => {
+    //   if (!res.ok && typeof this.defaults.onError === 'function') {
+    //     return res[resolver]().then(err => {
+    //       this.defaults.onError(err, res)
+    //       return Promise.reject(err, res)
+    //     })
+    //   } else {
+    //     return res[resolver]()
+    //   }
+    // })
   }
 
   ;['get', 'delete', 'head', 'options'].map(method => {
