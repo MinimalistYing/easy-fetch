@@ -45,16 +45,14 @@
     const resolver = config.resolver;
     const url = config.url;
     delete config.url;
-    return window.fetch(url, config).then(res => {
-      // if (!res.ok && typeof config.onError === 'function') {
-      //   return res[resolver]().then(err => {
-      //     config.onError(err, res)
-      //     return Promise.reject(err, res)
-      //   })
-      // } else {
-      //   return res[resolver]()
-      // }
-      return res[resolver]()
+    return new Promise((resolve, reject) => {
+      window.fetch(url, config).then(res => {
+        if (!res.ok) {
+          res[resolver]().then(err => reject(err));
+        } else {
+          resolve(res[resolver]());
+        }
+      });
     })
   }
 
