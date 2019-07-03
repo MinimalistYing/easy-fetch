@@ -4,6 +4,7 @@ Original Fetch API with some additional helpful feature
 # Feature
 * Global onError callback function
 * Global base URL
+* Request & Response Intecpetors
 
 # Browser Support
 Sorry ~ Only support the modern browsers
@@ -19,7 +20,6 @@ npm i the-fetch --save
 import fetch from 'the-fetch'
 
 fetch.defaults.base = 'https://www.xxx.com/' // set base URL
-fetch.defaults.onError = err => console.log(err) // set error callback
 
 /**
  * If not set the response will resolve to json like
@@ -39,4 +39,26 @@ fetch('/addData', {
   method: 'POST',
   body: data
 }).then(res => console.log(res))
+```
+
+# Interceptor
+```js
+import fetch from 'the-fetch'
+
+// Use request interceptor to change the initial config
+fetch.interceptors.request.use(config => {
+  // this config is the final config that will pass to fetch(url, config)
+  config.extra = 'Hello'
+  return config
+}, err => {
+  return Promise.reject(err)
+})
+
+// Use response interceptor to do some extra work when request finished
+fetch.interceptors.response.use(response => {
+  return response
+}, err => {
+  console.log(err.message)
+  return Promise.reject(err)
+})
 ```

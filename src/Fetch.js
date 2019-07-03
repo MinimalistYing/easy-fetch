@@ -52,21 +52,6 @@ Fetch.prototype.request = function (url, init = {}) {
   }
 
   return promise
-  // url = combineURL(this.defaults.base, url)
-  // const resolver = init.resolver || this.defaults.resolver
-  // return window.fetch(url, {
-  //   ...this.defaults,
-  //   ...init
-  // }).then(res => {
-  //   if (!res.ok && typeof this.defaults.onError === 'function') {
-  //     return res[resolver]().then(err => {
-  //       this.defaults.onError(err, res)
-  //       return Promise.reject(err, res)
-  //     })
-  //   } else {
-  //     return res[resolver]()
-  //   }
-  // })
 }
 
 ;['get', 'delete', 'head', 'options'].map(method => {
