@@ -48,7 +48,7 @@
     return new Promise((resolve, reject) => {
       window.fetch(url, config).then(res => {
         if (!res.ok) {
-          res[resolver]().then(err => reject(err));
+          res[resolver]().then(err => reject({ ...err, response: res }));
         } else {
           resolve(res[resolver]());
         }
@@ -138,8 +138,7 @@
     mode: 'cors', // allow cors
 
     resolver: 'json', // reslove response to json
-    base: '',
-    onError: () => {}
+    base: ''
   };
 
   const fetch = new Fetch(defaults);

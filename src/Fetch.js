@@ -17,7 +17,7 @@ function dispatchRequest (config) {
   return new Promise((resolve, reject) => {
     window.fetch(url, config).then(res => {
       if (!res.ok) {
-        res[resolver]().then(err => reject(err))
+        res[resolver]().then(err => reject({ ...err, response: res }))
       } else {
         resolve(res[resolver]())
       }
